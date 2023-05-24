@@ -1,0 +1,36 @@
+1> dowlode projcet offical webite.
+2> database setup.
+3> .htaccess chnage of file...
+
+
+	RewriteEngine On 
+
+					RewriteBase /new/ 
+
+					RewriteCond %{REQUEST_URI} ^system.* 
+
+					RewriteRule ^(.*)$ /index.php/$1 [L] 
+
+					RewriteCond %{REQUEST_FILENAME} !-f 
+
+					RewriteCond %{REQUEST_FILENAME} !-d 
+
+					RewriteRule ^(.*)$ /new/index.php/$1 [L]
+
+
+4>
+	$autoload['helper'] = array('url', 'file');
+
+	in Autoload.php file change
+
+
+5>
+
+	database lode in autolode.php \
+
+
+$autoload['libraries'] = array('database');
+
+
+
+
