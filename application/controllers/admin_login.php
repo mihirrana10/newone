@@ -44,7 +44,8 @@ class admin_login extends CI_Controller
 			$this->db->where("admin_user_pwd",$this->input->post('txt_pwd'));
 			$query=$this->db->get();
 			if($query->num_rows()>0)
-			{
+			{	
+				unset($_SESSION['error_msg']);
 
 				foreach($query->result() as $row)
 				{
@@ -62,6 +63,7 @@ class admin_login extends CI_Controller
 			}
 			else
 			{
+				$_SESSION['error_msg']='<p style="color:red">Invalid Email or Password</p>';
 				redirect(base_url().'admin_login');	
 			}
 		}	

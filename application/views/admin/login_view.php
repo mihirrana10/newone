@@ -18,7 +18,13 @@
 					<h2>Login to your account</h2>
 					
 					<?php echo form_open('admin_login');?>
-                                    
+					<?php 
+              //echo $_SERVER['PHP_SELF'];
+              if(isset($_SESSION['error_msg']))
+              {
+                echo $_SESSION['error_msg'];
+              }
+              ?>
 					<fieldset>
 							<div class="input-prepend" title="Username">
 								<span class="add-on"><i class="halflings-icon user"></i></span>
