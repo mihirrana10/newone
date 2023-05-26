@@ -111,6 +111,81 @@ class admin extends CI_Controller {
 		$this->load->view('admin/category_view');
 	}
 
+	public function manage_product($param1="",$param2="",$param3="")
+	{
+		if($param1=="create")
+		{
+			$data["product_name"]=$this->input->post("txt_product_name");
+			$data["product_dec"]=$this->input->post("txt_product_dec");
+			
+
+			if($_FILES["product_image"]["error"]==0)
+                {
+                    $newname = $_FILES["product_image"]["name"];
+                    $newname = $this->generate_random_name($newname);
+                    
+                    $config["file_name"]=$newname;
+                    $config["upload_path"]="files/admin/product/";
+                        $config["allowed_types"]="gif|jpg|png|bmp|jpeg|ico|jpeg";
+                    $config["max_width"]="102400";
+                    $config["max_height"]="76800";
+                    $config["max_size"]=1024*1024*2;
+                    
+                    $this->load->library("upload");
+                    $this->upload->initialize($config);
+                    $this->upload->do_upload("product_image");
+
+                    $data["product_image"]=$newname;
+                        $this->smart_resize_image("files/admin/product/".$newname,262,200,true, "files/admin/product/".$newname,false,false);
+                }
+		    $data["category_id"]=$this->input->post("cmb_category");
+			$this->db->insert("tbl_prodect",$data);
+			redirect(base_url()."admin/manage_product");
+		}
+		if($param1=="delete")
+		{
+		    $this->db->where("product_id ",$param2);
+		    $this->db->delete("tbl_prodect");
+		    redirect(base_url()."admin/manage_product");
+		}
+
+		if($param1=="edit" && $param2=="do_update")
+		{
+			$data["product_name"]=$this->input->post("txt_product_name");
+			$data["product_dec"]=$this->input->post("txt_product_dec");
+			if($_FILES["product_image"]["error"]==0)
+                {
+                    $newname = $_FILES["product_image"]["name"];
+                    $newname = $this->generate_random_name($newname);
+                    
+                    $config["file_name"]=$newname;
+                    $config["upload_path"]="files/admin/product/";
+                        $config["allowed_types"]="gif|jpg|png|bmp|jpeg|ico|jpeg";
+                    $config["max_width"]="102400";
+                    $config["max_height"]="76800";
+                    $config["max_size"]=1024*1024*2;
+                    
+                    $this->load->library("upload");
+                    $this->upload->initialize($config);
+                    $this->upload->do_upload("product_image");
+
+                    $data["product_image"]=$newname;
+                        $this->smart_resize_image("files/admin/product/".$newname,262,200,true, "files/admin/product/".$newname,false,false);
+                }
+		    $data["category_id"]=$this->input->post("cmb_category");
+			
+			$this->db->where("product_id ",$param3);
+			$this->db->update("tbl_prodect",$data);
+			redirect(base_url()."admin/manage_product");
+		}
+		else if($param1=="edit")
+		{
+			$page_data["edit_profile"]=$this->db->get_where("tbl_prodect",array("product_id "=>$param2));
+		}
+
+		$this->load->view('admin/product_view');
+	}
+
 	public function generate_random_name($filename)
 	{
 	    $ext         = pathinfo($filename, PATHINFO_EXTENSION);
